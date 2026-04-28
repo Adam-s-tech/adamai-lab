@@ -20,6 +20,23 @@
   --shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
 }
 
+/* ---- Skip link (accessibility) ---- */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--color-accent);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.88rem;
+  z-index: 200;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* ---- Reset ---- */
 *, *::before, *::after {
   box-sizing: border-box;
