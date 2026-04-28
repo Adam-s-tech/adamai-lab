@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus — GPT Image API : L'image générée, utile si cadrée — AdamAI Lab</title>
+  <meta name="description" content="Analyse cadrée sur la génération d'images par instruction écrite : cas d'usage réalistes, points d'attention, grille d'évaluation pour décideurs.">
+  <link rel="canonical" href="https://lab.adamai.fr/gpt-image.html">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="index.html">AdamAI Lab</a>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="insights.html">Insights</a></li>
+        <li><a href="focus.html" class="active" aria-current="page">Focus</a></li>
+        <li><a href="method.html">Méthode</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <p class="breadcrumb"><a href="focus.html">← Retour aux Focus</a></p>
+
+  <div class="hero">
+    <span class="section-label">Focus #1</span>
+    <h1>GPT Image API</h1>
+    <p class="hero-sub">L'image générée, utile si cadrée. Une lecture pour décider si — et comment — intégrer la génération d'images dans vos processus.</p>
+  </div>
+
+  <section>
+    <h2>Cas d'usage réalistes</h2>
+    <p style="font-size:0.9rem; color:var(--color-muted); margin-bottom:1rem;">Ce que des organisations ont fait avec ce type d'outil dans des contextes professionnels.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Prototypage visuel rapide</h3>
+        <p>Produire des premières versions de visuels pour valider un concept en réunion, avant de commander une création finalisée. Gain de temps sur les itérations initiales.</p>
+      </div>
+      <div class="card">
+        <h3>Illustration de contenu éditorial</h3>
+        <p>Accompagner des articles internes, des présentations ou des rapports avec des images cohérentes avec le propos — sans banque d'images générique.</p>
+      </div>
+      <div class="card">
+        <h3>Variantes de communication</h3>
+        <p>Décliner un même message visuel pour des contextes différents (formats, cibles, canaux) sans refaire une prise de vue ou commander plusieurs créations.</p>
+      </div>
+      <div class="card">
+        <h3>Formation et pédagogie</h3>
+        <p>Créer des supports illustrés pour des formations internes sur des sujets où les images libres de droits sont rares ou inadaptées au contexte métier.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Points d'attention</h2>
+    <p style="font-size:0.9rem; color:var(--color-muted); margin-bottom:1rem;">Ce qu'il faut anticiper avant de déployer ce type d'outil dans une organisation.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Droits et responsabilité juridique</h3>
+        <p>Le statut des images générées par IA reste flou dans la plupart des droits nationaux. Qui est propriétaire ? Qui est responsable si une image ressemble à une œuvre existante ? Ces questions n'ont pas de réponse définitive aujourd'hui.</p>
+      </div>
+      <div class="card">
+        <h3>Cohérence de marque</h3>
+        <p>Obtenir des images cohérentes avec une identité visuelle établie demande un cadrage précis et des tests successifs. La génération spontanée produit rarement ce qu'une charte graphique impose.</p>
+      </div>
+      <div class="card">
+        <h3>Données envoyées au service</h3>
+        <p>Les instructions textuelles envoyées pour générer une image transitent par des serveurs tiers. Si ces instructions contiennent des informations sensibles ou confidentielles, les conditions d'utilisation s'appliquent.</p>
+      </div>
+      <div class="card">
+        <h3>Validation humaine obligatoire</h3>
+        <p>Les images générées peuvent contenir des erreurs (texte illisible, représentations inappropriées, incohérences visuelles) non détectables sans relecture. Une étape de validation reste nécessaire avant toute diffusion.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <section>
+    <h2>Grille d'évaluation</h2>
+    <p style="font-size:0.9rem; color:var(--color-muted); margin-bottom:1rem;">Avant d'intégrer un outil de génération d'images, ces questions permettent d'évaluer la pertinence pour votre contexte.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Question à poser</th>
+            <th>Signal positif</th>
+            <th>Signal de prudence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Usage ciblé</td>
+            <td>Pour quel usage précis allons-nous générer des images ?</td>
+            <td>Usage identifié, contexte borné (prototype, illustration interne…)</td>
+            <td>Usage vague ou "on verra selon les besoins"</td>
+          </tr>
+          <tr>
+            <td>Cadre juridique</td>
+            <td>Notre conseil juridique a-t-il examiné les conditions d'utilisation de l'outil ?</td>
+            <td>Avis documenté, périmètre d'usage défini</td>
+            <td>Aucune revue, droits supposés acquis par défaut</td>
+          </tr>
+          <tr>
+            <td>Validation des images</td>
+            <td>Qui valide les images générées avant diffusion ?</td>
+            <td>Responsable identifié, circuit de validation en place</td>
+            <td>Diffusion directe sans relecture définie</td>
+          </tr>
+          <tr>
+            <td>Données transmises</td>
+            <td>Les instructions contiendront-elles des informations confidentielles ?</td>
+            <td>Instructions génériques, sans données sensibles</td>
+            <td>Instructions incluant des données clients, brevets ou informations internes</td>
+          </tr>
+          <tr>
+            <td>Cohérence de marque</td>
+            <td>Avons-nous testé la cohérence avec notre charte visuelle ?</td>
+            <td>Tests effectués, résultats satisfaisants sur nos cas d'usage</td>
+            <td>Aucun test, attente de cohérence automatique</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="cta-block" style="margin-top:2.5rem;">
+    <p>Ce Focus soulève des questions que vous aimeriez approfondir dans votre contexte ?</p>
+    <a href="contact.html" class="btn">En parler 20 minutes</a>
+  </div>
+
+  <p style="margin-top:1.5rem; font-size:0.85rem;"><a href="focus.html">← Retour aux Focus</a></p>
+
+</main>
+
+<footer>
+  <p>AdamAI Lab &mdash; <a href="https://lab.adamai.fr/">lab.adamai.fr</a> &mdash; <a href="contact.html">Contact</a></p>
+</footer>
+
+</body>
+</html>
