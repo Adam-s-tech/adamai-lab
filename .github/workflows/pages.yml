@@ -28,6 +28,9 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Vérifier le registre
+        run: node outils/verify-registry.mjs
+
       - name: Vérifier la cohérence du site
         run: node outils/verify-site.mjs
 

@@ -20,27 +20,6 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
-const MOIS = [
-  "janvier",
-  "février",
-  "mars",
-  "avril",
-  "mai",
-  "juin",
-  "juillet",
-  "août",
-  "septembre",
-  "octobre",
-  "novembre",
-  "décembre",
-];
-
-function formatDate(iso) {
-  const [y, m, d] = String(iso).split("-").map(Number);
-  if (!y || !m || !d) return String(iso);
-  return `${d} ${MOIS[m - 1]} ${y}`;
-}
-
 function replaceBlock(rel, start, end, lines) {
   const file = path.join(root, rel);
   const text = fs.readFileSync(file, "utf8");
@@ -68,14 +47,28 @@ const demos = Array.isArray(registry.demos) ? registry.demos : [];
 const updated = registry.mise_a_jour || new Date().toISOString().slice(0, 10);
 
 for (const demo of demos) {
-  for (const key of ["slug", "titre", "resume", "source", "date_ajout"]) {
+  for (const key of ["slug", "titre", "date_ajout"]) {
     if (!demo[key]) throw new Error(`demos.json : champ ${key} manquant`);
+  }
+  const type = demo.type || "demo";
+  if (type !== "demo" && type !== "test") {
+    throw new Error(`demos.json : type inconnu pour ${demo.slug} (${type})`);
+  }
+  if (type === "demo" && (!demo.resume || !demo.source)) {
+    throw new Error(`demos.json : resume ou source manquant pour la démo ${demo.slug}`);
+  }
+  if (type === "test" && !demo.rapport) {
+    throw new Error(`demos.json : rapport manquant pour l’entrée de test ${demo.slug}`);
+  }
+  if (type === "test" && !demo.resume && !demo.resume_test) {
+    throw new Error(`demos.json : resume ou resume_test manquant pour ${demo.slug}`);
   }
 }
 
 const demoLines = [];
 demoLines.push("    <div class=\"cards\">");
 for (const demo of demos) {
+  if ((demo.type || "demo") !== "demo") continue;
   const url = `./${demo.slug}/`;
   demoLines.push("      <article class=\"card\">");
   demoLines.push(`        <h3><a href="${url}">${escapeHtml(demo.titre)}</a></h3>`);
@@ -97,10 +90,12 @@ for (const demo of demos) {
   if (!demo.rapport) continue;
   testLines.push("      <article class=\"card\">");
   testLines.push(`        <h3><a href="./${demo.rapport}/">${escapeHtml(demo.titre)}</a></h3>`);
-  testLines.push(
-    `        <p>Campagne du ${escapeHtml(formatDate(demo.date_ajout))} : trois images de référence, contrôles d’interface et limites observées.</p>`,
-  );
-  testLines.push(`        <p><a href="../../demos/${demo.slug}/">Ouvrir la démo</a></p>`);
+  testLines.push(`        <p>${escapeHtml(demo.resume_test || demo.resume)}</p>`);
+  if ((demo.type || "demo") === "demo") {
+    testLines.push(`        <p><a href="../demos/${demo.slug}/">Ouvrir la démo</a></p>`);
+  } else if (demo.source) {
+    testLines.push(`        <p><a href="${demo.source}" rel="noopener">Code source</a></p>`);
+  }
   testLines.push("      </article>");
 }
 testLines.push("    </div>");
@@ -117,6 +112,7 @@ function urlEntry(loc, changefreq, priority) {
 
 urlEntry(`${SITE}/demos/`, "weekly", "0.9");
 for (const demo of demos) {
+  if ((demo.type || "demo") !== "demo") continue;
   urlEntry(`${SITE}/demos/${demo.slug}/`, "monthly", "0.9");
   if (demo.documentation) {
     urlEntry(`${SITE}/demos/${demo.slug}/${demo.documentation}`, "monthly", "0.7");

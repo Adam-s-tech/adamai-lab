@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
@@ -14,7 +15,7 @@ function arg(name, fallback) {
 
 const slug = arg("slug", "");
 if (!slug) {
-  console.error("usage : node outils/sync-demo.mjs --slug <slug> [--source <dossier>] [--images <dossier>] [--from <url>] [--base <url>] [--out <dossier>]");
+  console.error("usage : node outils/sync-demo.mjs --slug <slug> [--source <dossier>] [--images <dossier>] [--from <url>] [--base <url>] [--out <dossier>] [--commit <sha>] [--source-url <url>]");
   process.exit(2);
 }
 
@@ -24,6 +25,32 @@ const from = arg("from", "https://adam-s-tech.github.io/ocr-llm-miniature/");
 const baseArg = arg("base", `https://lab.adamai.fr/demos/${slug}/`);
 const base = baseArg.endsWith("/") ? baseArg : `${baseArg}/`;
 const out = path.resolve(root, arg("out", `demos/${slug}`));
+
+const registryFile = path.join(root, "demos", "demos.json");
+const registry = JSON.parse(fs.readFileSync(registryFile, "utf8"));
+const entry = Array.isArray(registry.demos)
+  ? registry.demos.find((item) => item.slug === slug)
+  : null;
+const sourceUrl = arg("source-url", entry && entry.source ? entry.source : "");
+
+function detectCommit() {
+  const forced = arg("commit", "");
+  if (forced) return forced;
+  const candidates = [source, path.resolve(source, "..")];
+  for (const cwd of candidates) {
+    try {
+      const top = execFileSync("git", ["-C", cwd, "rev-parse", "--show-toplevel"], { encoding: "utf8" }).trim();
+      const sha = execFileSync("git", ["-C", top, "rev-parse", "HEAD"], { encoding: "utf8" }).trim();
+      if (/^[0-9a-f]{7,40}$/.test(sha)) return sha;
+    } catch {
+      // dossier sans dépôt git : on essaie le suivant
+    }
+  }
+  return "";
+}
+
+const sourceCommit = detectCommit();
+const syncedAt = new Date().toISOString();
 
 if (!fs.existsSync(source)) throw new Error(`source introuvable : ${source}`);
 if (!fs.existsSync(images)) throw new Error(`images introuvables : ${images}`);
@@ -64,6 +91,25 @@ for (const name of fs.readdirSync(out)) {
   replaced += hits;
   remaining += (after.match(/adam-s-tech\.github\.io/g) || []).length;
   pages += 1;
+}
+
+const version = {
+  slug,
+  source: sourceUrl,
+  source_commit: sourceCommit,
+  synced_at: syncedAt,
+};
+fs.writeFileSync(path.join(out, "version.json"), `${JSON.stringify(version, null, 2)}\n`);
+
+if (entry) {
+  entry.type = entry.type || "demo";
+  entry.source_commit = sourceCommit;
+  entry.synced_at = syncedAt;
+  registry.mise_a_jour = syncedAt.slice(0, 10);
+  fs.writeFileSync(registryFile, `${JSON.stringify(registry, null, 2)}\n`);
+  console.log(`registre : source_commit ${sourceCommit || "inconnu"}, synced_at ${syncedAt}`);
+} else {
+  console.warn(`registre : aucune entrée ${slug}, version.json écrite sans mise à jour du registre`);
 }
 
 console.log(`démo ${slug} synchronisée dans ${path.relative(root, out)}`);

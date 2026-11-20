@@ -44,9 +44,12 @@ for (const page of ["insights.html", "focus.html", "gpt-image.html", "method.htm
 expected.set(`${SITE}/demos/`, "demos/index.html");
 expected.set(`${SITE}/tests/`, "tests/index.html");
 for (const demo of demos) {
-  expected.set(`${SITE}/demos/${demo.slug}/`, `demos/${demo.slug}/index.html`);
-  if (demo.documentation) {
-    expected.set(`${SITE}/demos/${demo.slug}/${demo.documentation}`, `demos/${demo.slug}/${demo.documentation}`);
+  const type = demo.type || "demo";
+  if (type === "demo") {
+    expected.set(`${SITE}/demos/${demo.slug}/`, `demos/${demo.slug}/index.html`);
+    if (demo.documentation) {
+      expected.set(`${SITE}/demos/${demo.slug}/${demo.documentation}`, `demos/${demo.slug}/${demo.documentation}`);
+    }
   }
   if (demo.rapport) {
     expected.set(`${SITE}/tests/${demo.rapport}/`, `tests/${demo.rapport}/index.html`);
@@ -114,6 +117,7 @@ for (const rel of [...listHtml("demos"), ...listHtml("tests")]) {
 }
 
 for (const demo of demos) {
+  if ((demo.type || "demo") !== "demo") continue;
   const dir = `demos/${demo.slug}`;
   for (const name of [
     "index.html",
@@ -129,6 +133,9 @@ for (const demo of demos) {
   if (demo.documentation && !exists(`${dir}/${demo.documentation}`)) {
     fail(`${dir} : documentation ${demo.documentation} absente`);
   }
+  if (demo.capture && !exists(`${dir}/${demo.capture}`)) {
+    fail(`${dir} : capture ${demo.capture} absente`);
+  }
   const imgDir = path.join(root, dir, "exemples", "images");
   if (!fs.existsSync(imgDir)) {
     fail(`${dir} : dossier exemples/images absent`);
@@ -140,6 +147,24 @@ for (const demo of demos) {
   }
   if (exists(`${dir}/robots.txt`) || exists(`${dir}/sitemap.xml`)) {
     fail(`${dir} : robots.txt ou sitemap.xml de démo encore présent`);
+  }
+  if (exists(`${dir}/version.json`)) {
+    let version = null;
+    try {
+      version = JSON.parse(read(`${dir}/version.json`));
+    } catch {
+      fail(`${dir}/version.json : JSON invalide`);
+    }
+    if (version) {
+      if (version.slug !== demo.slug) {
+        fail(`${dir}/version.json : slug ${version.slug} au lieu de ${demo.slug}`);
+      }
+      if (demo.source && version.source !== demo.source) {
+        fail(`${dir}/version.json : source ${version.source} au lieu de ${demo.source}`);
+      }
+      if (!version.source_commit) fail(`${dir}/version.json : source_commit absent`);
+      if (!version.synced_at) fail(`${dir}/version.json : synced_at absent`);
+    }
   }
 }
 

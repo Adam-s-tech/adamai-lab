@@ -1,0 +1,18 @@
+{
+  "name": "{{SLUG}}",
+  "version": "0.1.0",
+  "description": "{{RESUME}}",
+  "type": "module",
+  "private": true,
+  "author": "{{AUTEUR}}",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "{{SOURCE}}"
+  },
+  "homepage": "https://lab.adamai.fr/demos/{{SLUG}}/",
+  "scripts": {
+    "check:site": "node scripts/check-site.mjs",
+    "test:e2e": "node tests/e2e.mjs"
+  }
+}
