@@ -21,6 +21,7 @@ Chaque démo vit dans son propre dossier sous `demos/<sujet>/`, avec ses liens r
 | `node outils/sync-demo.mjs --slug <sujet>` | copie une démo et réécrit son URL de base |
 | `node outils/build-hub.mjs` | régénère catalogue, index des tests et sitemap |
 | `node outils/verify-site.mjs` | contrôle canonical, sitemap, liens et absence de tiret cadratin |
+| `node outils/scan-typographie.mjs` | audit des tirets et de la typographie ; `--strict` pour échouer |
 
 ## Structure du dépôt
 
