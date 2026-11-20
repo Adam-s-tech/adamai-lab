@@ -20,6 +20,27 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
+const MOIS = [
+  "janvier",
+  "février",
+  "mars",
+  "avril",
+  "mai",
+  "juin",
+  "juillet",
+  "août",
+  "septembre",
+  "octobre",
+  "novembre",
+  "décembre",
+];
+
+function formatDate(iso) {
+  const [y, m, d] = String(iso).split("-").map(Number);
+  if (!y || !m || !d) return String(iso);
+  return `${d} ${MOIS[m - 1]} ${y}`;
+}
+
 function replaceBlock(rel, start, end, lines) {
   const file = path.join(root, rel);
   const text = fs.readFileSync(file, "utf8");
@@ -77,7 +98,7 @@ for (const demo of demos) {
   testLines.push("      <article class=\"card\">");
   testLines.push(`        <h3><a href="./${demo.rapport}/">${escapeHtml(demo.titre)}</a></h3>`);
   testLines.push(
-    `        <p>Campagne du ${escapeHtml(demo.date_ajout)} : trois images de référence, contrôles d’interface et limites observées.</p>`,
+    `        <p>Campagne du ${escapeHtml(formatDate(demo.date_ajout))} : trois images de référence, contrôles d’interface et limites observées.</p>`,
   );
   testLines.push(`        <p><a href="../../demos/${demo.slug}/">Ouvrir la démo</a></p>`);
   testLines.push("      </article>");
