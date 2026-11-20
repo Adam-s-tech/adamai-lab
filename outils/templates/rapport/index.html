@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport de test : {{TITRE}} · AdamAI Lab</title>
+  <meta name="description" content="Rapport de test de {{TITRE}} : objectif, jeu de données, contexte, temps, résultats, erreurs, interprétation, cas d’usage et JSON.">
+  <link rel="canonical" href="https://lab.adamai.fr/tests/{{SLUG}}/">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="../../index.html">AdamAI Lab</a>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../../insights.html">Insights</a></li>
+        <li><a href="../../focus.html">Focus</a></li>
+        <li><a href="../../method.html">Méthode</a></li>
+        <li><a href="../../demos/">Démos</a></li>
+        <li><a href="../../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <p class="breadcrumb"><a href="../">Rapports de test</a> · {{TITRE}}</p>
+
+  <div class="hero">
+    <h1>Rapport de test : {{TITRE}}</h1>
+    <p class="hero-sub">{{RESUME_TEST}}</p>
+  </div>
+
+  <span class="meta-update">Version testée : {{VERSION}} · Dernière mise à jour : {{DATE}}</span>
+
+  <section>
+    <span class="section-label">Objectif</span>
+    <p>{{OBJECTIF}}</p>
+  </section>
+
+  <section>
+    <span class="section-label">Image ou jeu de données</span>
+    <p>{{JEU_DONNEES}}</p>
+  </section>
+
+  <section>
+    <span class="section-label">Contexte</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Élément</th><th>Valeur</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Système</td><td>{{SYSTEME}}</td></tr>
+          <tr><td>Navigateur ou moteur</td><td>{{NAVIGATEUR}}</td></tr>
+          <tr><td>Version testée</td><td>{{VERSION}}</td></tr>
+          <tr><td>Mode</td><td>{{MODE}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">Temps</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Passage</th><th>Durée</th><th>Commentaire</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>À froid</td><td>{{TEMPS_FROID}}</td><td>{{COMMENTAIRE_FROID}}</td></tr>
+          <tr><td>À chaud</td><td>{{TEMPS_CHAUD}}</td><td>{{COMMENTAIRE_CHAUD}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">Résultats</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Mesure</th><th>Résultat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>{{MESURE_1}}</td><td>{{RESULTAT_1}}</td></tr>
+          <tr><td>{{MESURE_2}}</td><td>{{RESULTAT_2}}</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <span class="section-label">Erreurs</span>
+    <ul>
+      <li>{{ERREUR_1}}</li>
+      <li>{{ERREUR_2}}</li>
+    </ul>
+  </section>
+
+  <section>
+    <span class="section-label">Interprétation</span>
+    <p>{{INTERPRETATION}}</p>
+  </section>
+
+  <section>
+    <span class="section-label">Cas d’usage</span>
+    <p>{{CAS_USAGE}}</p>
+  </section>
+
+  <section>
+    <span class="section-label">JSON</span>
+    <p>{{JSON}}</p>
+    <p>La sortie brute et la preuve sont conservées avec le dépôt source : <a href="{{SOURCE}}">{{SOURCE}}</a>.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Conclusion</span>
+    <p>{{CONCLUSION}}</p>
+  </section>
+
+</main>
+
+<footer>
+  <p>AdamAI Lab · <a href="https://lab.adamai.fr/">lab.adamai.fr</a> · <a href="../../contact.html">Contact</a></p>
+</footer>
+
+</body>
+</html>

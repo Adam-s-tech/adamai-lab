@@ -1,0 +1,30 @@
+name: Vérifications
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Analyse et cohérence
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Vérifier les fichiers SEO
+        run: node scripts/check-site.mjs
+
+      - name: Vérifier les fichiers du site
+        run: node tests/e2e.mjs --check-only

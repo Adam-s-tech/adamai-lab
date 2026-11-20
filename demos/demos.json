@@ -3,13 +3,26 @@
   "demos": [
     {
       "slug": "ocr-llm-miniature",
+      "type": "demo",
       "titre": "OCR et vision avec un LLM miniature",
       "resume": "Analyse d’image locale dans le navigateur : OCR, détection d’objets, segmentation et export JSON, sans envoi de l’image.",
       "source": "https://github.com/Adam-s-tech/ocr-llm-miniature",
       "documentation": "documentation.html",
       "rapport": "ocr-llm-miniature",
       "date_ajout": "2026-11-20",
-      "statut": "stable"
+      "statut": "stable",
+      "tags": [
+        "ocr",
+        "vision",
+        "webassembly",
+        "local"
+      ],
+      "licence": "Code de démonstration sans licence ouverte ; modèle Mirage et runtime Cactus sous Apache 2.0",
+      "credits": "Adama BELEM pour la version française ; démonstration originale de Joe Maddalone ; moteur Cactus Compute",
+      "capture": "og-image.png",
+      "resume_test": "Trois images de référence, contrôles d’interface et limites observées.",
+      "source_commit": "565fdfb0e22d40866dbd9fbceb82ba24ef4f37ac",
+      "synced_at": "2026-11-20T11:09:53.261Z"
     }
   ]
 }

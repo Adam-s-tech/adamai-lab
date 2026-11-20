@@ -18,10 +18,14 @@ Chaque démo vit dans son propre dossier sous `demos/<sujet>/`, avec ses liens r
 
 | Commande | Rôle |
 |---|---|
-| `node outils/sync-demo.mjs --slug <sujet>` | copie une démo et réécrit son URL de base |
+| `node outils/verify-registry.mjs` | contrôle le registre : champs requis, slugs, doublons, chemins |
+| `node outils/sync-demo.mjs --slug <sujet>` | copie une démo, réécrit son URL de base et écrit `version.json` |
 | `node outils/build-hub.mjs` | régénère catalogue, index des tests et sitemap |
 | `node outils/verify-site.mjs` | contrôle canonical, sitemap, liens et absence de tiret cadratin |
 | `node outils/scan-typographie.mjs` | audit des tirets et de la typographie ; `--strict` pour échouer |
+
+Les modèles de dépôt de démo et de rapport de test sont dans `outils/templates/`. Le processus complet, les rôles,
+les portillons et la cadence sont décrits dans `outils/templates/GUIDE-USINE.md`.
 
 ## Structure du dépôt
 
@@ -59,4 +63,5 @@ Le site est publié via GitHub Pages, en source GitHub Actions. Le workflow `.gi
 
 ## Licence
 
-MIT, voir `LICENSE`.
+MIT pour le code du hub, voir `LICENSE`. Cette licence ne couvre ni les démonstrations copiées sous `demos/`, ni
+leurs composants tiers. La licence de chaque démonstration est portée par son dépôt source et rappelée dans le registre.
