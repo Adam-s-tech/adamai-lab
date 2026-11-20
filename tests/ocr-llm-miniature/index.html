@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapport de test : OCR et vision avec un LLM miniature · AdamAI Lab</title>
+  <meta name="description" content="Rapport de test de la démo OCR et vision : environnement de mesure, trois images de référence, contrôles d’interface, publication statique et limites observées.">
+  <link rel="canonical" href="https://lab.adamai.fr/tests/ocr-llm-miniature/">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Aller au contenu</a>
+
+<header>
+  <div class="header-inner">
+    <a class="site-logo" href="../../index.html">AdamAI Lab</a>
+    <nav aria-label="Navigation principale">
+      <ul>
+        <li><a href="../../index.html">Accueil</a></li>
+        <li><a href="../../insights.html">Insights</a></li>
+        <li><a href="../../focus.html">Focus</a></li>
+        <li><a href="../../method.html">Méthode</a></li>
+        <li><a href="../../demos/">Démos</a></li>
+        <li><a href="../../contact.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <p class="breadcrumb"><a href="../">Rapports de test</a> · OCR et vision avec un LLM miniature</p>
+
+  <div class="hero">
+    <h1>Rapport de test : OCR et vision avec un LLM miniature</h1>
+    <p class="hero-sub">Campagnes du 17 et du 20 novembre 2026. Mesures reproductibles, contrôles d’interface et limites écrites.</p>
+  </div>
+
+  <span class="meta-update">Version testée : 1.0.1 · Dernière mise à jour : 2026-11-20</span>
+
+  <section>
+    <span class="section-label">Objet</span>
+    <p>La démo analyse une image dans le navigateur avec le modèle de vision Mirage, compilé en WebAssembly. Elle produit un JSON qui contient les objets détectés, le texte reconnu, les relations visuelles et une description de la scène. Ce rapport vérifie trois choses : que l’analyse fonctionne sur trois images de nature différente, que l’interface fait ce qu’elle annonce, et que l’image ne quitte pas le navigateur.</p>
+    <p>Le rapport décrit aussi ce qui n’a pas été vérifié. Une mesure absente n’est pas une mesure réussie.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Environnement de mesure</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Élément</th><th>Valeur</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Système</td><td>Windows 11</td></tr>
+          <tr><td>Navigateur</td><td>Microsoft Edge 157.0.4341.60, mode sans interface, profil neuf à chaque exécution</td></tr>
+          <tr><td>Bun</td><td>1.4.4</td></tr>
+          <tr><td>Node.js</td><td>24.13.0</td></tr>
+          <tr><td>Modèle</td><td>Cactus-Compute/mirage, <code>mirage.cact</code> de 21 611 043 octets</td></tr>
+          <tr><td>Moteur</td><td><code>vendor/cactus.wasm</code> du dépôt</td></tr>
+          <tr><td>Résolution d’entrée</td><td>1024 pixels sur le grand côté</td></tr>
+          <tr><td>Mode</td><td>WebAssembly, deux exécutions par image</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Google Chrome n’était pas installé sur le poste. Firefox et Safari n’ont pas été testés.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Résultats des trois images</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Image</th><th>Objets</th><th>Textes</th><th>Relations</th><th>Inférence à froid</th><th>Inférence à chaud</th><th>Total premier lancement</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Deux cafés</td><td>5</td><td>0</td><td>6</td><td>6,89 s</td><td>3,73 s</td><td>7,87 s</td></tr>
+          <tr><td>Marketing x AI Market Map</td><td>29</td><td>32</td><td>2</td><td>9,86 s</td><td>6,14 s</td><td>10,81 s</td></tr>
+          <tr><td>Schéma Power BI</td><td>20</td><td>25</td><td>1</td><td>8,49 s</td><td>5,64 s</td><td>9,71 s</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>« À froid » désigne la première inférence après le chargement du moteur. Le total du premier lancement inclut le téléchargement du modèle. Les trois JSON de référence ont été comparés après réexécution : contenu identique pour une même image.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Rejeu du 20 novembre</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Date</th><th>Image</th><th>Objets</th><th>Textes</th><th>Relations</th><th>Inférence à froid</th><th>Inférence à chaud</th><th>Total premier lancement</th><th>Version</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>2026-11-20</td><td>Deux cafés</td><td>5</td><td>0</td><td>6</td><td>5,98 s</td><td>4,07 s</td><td>7,81 s</td><td>1.0.1</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Ce rejeu a été effectué sur la copie publiée dans <code>/demos/ocr-llm-miniature/</code>, servie par un serveur statique local, avec téléchargement du modèle depuis Hugging Face. Il confirme le nombre d’objets, l’absence de texte et les six relations. Les durées varient d’une exécution à l’autre : 6,89 s à froid le 17 novembre, 5,98 s le 20 novembre. Le modèle n’est pas garanti déterministe.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Contrôles d’interface</span>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Contrôle</th><th>Résultat</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Import par le champ de fichier</td><td>OK</td></tr>
+          <tr><td>Glisser-déposer simulé avec un fichier réel</td><td>OK, fichier accepté, bouton activé</td></tr>
+          <tr><td>Format refusé (<code>.txt</code>)</td><td>OK, message « Format non accepté. », bouton désactivé</td></tr>
+          <tr><td>Décocher « Boîtes »</td><td>OK, empreinte du canevas modifiée</td></tr>
+          <tr><td>Filtre de confiance à 0,80</td><td>OK, « 5 objets » devient « 1 sur 5 objets » sur le test des cafés</td></tr>
+          <tr><td>Copie du JSON</td><td>OK côté charge utile : le texte remis à l’API presse-papiers est exactement le JSON affiché</td></tr>
+          <tr><td>Lecture du presse-papiers par le harnais</td><td>Échec attendu en mode sans interface, non bloquant</td></tr>
+          <tr><td>Téléchargement du JSON</td><td>OK, fichier UTF-8 avec <code>mirage_output</code> et <code>analysis_metadata</code></td></tr>
+          <tr><td>Réinitialisation</td><td>OK, aperçu, JSON et confiance remis à zéro</td></tr>
+          <tr><td>Affichage mobile 390 sur 844</td><td>OK, aucun défilement horizontal</td></tr>
+          <tr><td>Console du navigateur</td><td>Aucune erreur applicative</td></tr>
+          <tr><td>Requêtes réseau</td><td>Aucune requête ne transporte l’image</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Lors du rejeu du 20 novembre, le harnais récupère l’image du contrôle glisser-déposer à l’adresse <code>/exemples/images/...</code>, à la racine du site. Dans l’arborescence du lab, les images vivent sous <code>/demos/ocr-llm-miniature/exemples/</code>. Ce contrôle échoue donc dans ce contexte, alors que l’import par le champ de fichier et l’analyse réussissent. C’est une limite du harnais, pas de la démo. Le second 404 observé est la tentative <code>./models/mirage.cact</code>, attendue puisque les poids ne sont pas publiés dans le lab.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Publication statique</span>
+    <p>Un dossier <code>_site</code> a été construit comme le fait le workflow (contenu de <code>wasm-app</code> et images de <code>exemples</code>), puis servi par un serveur statique local, sans modèle local. L’application a téléchargé <code>mirage.cact</code> depuis Hugging Face, puis analysé l’image. Le JSON produit est identique octet pour octet à celui obtenu avec le modèle servi localement, empreinte SHA-256 <code>BD53EB469C6FDA5674FF47E1D45F562D758B51ED23FA4BF9AB474F66CDE13401</code>.</p>
+    <p>Ce test valide le chemin de publication, pas le déploiement lui-même. Les contrôles de mise en ligne sont décrits plus bas.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Mise en ligne sur lab.adamai.fr</span>
+    <p>La démo est publiée à l’adresse <a href="https://lab.adamai.fr/demos/ocr-llm-miniature/">https://lab.adamai.fr/demos/ocr-llm-miniature/</a>. Son URL canonique pointe sur cette adresse, et non sur l’ancien site de projet GitHub.</p>
+    <p>Les poids du modèle ne sont pas stockés dans le dépôt du lab : ils sont téléchargés depuis Hugging Face au premier usage, puis mis en cache par le navigateur. Les trois images de la documentation accompagnent la démo, pour que les exemples restent lisibles sans dépendance externe.</p>
+    <p>Le domaine ne publie qu’un seul fichier <code>robots.txt</code> et un seul <code>sitemap.xml</code>, à la racine. Les fichiers de même nom présents dans une démo sont ignorés par les moteurs de recherche et ne sont pas publiés.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Ce qui n’a pas été vérifié</span>
+    <ul>
+      <li>Google Chrome, Firefox et Safari. Chrome n’était pas installé, les deux autres n’ont pas été exécutés.</li>
+      <li>L’inférence en mode serveur avec la CLI Cactus, absente du poste. La route répond, mais l’analyse n’a pas été exécutée.</li>
+      <li>Le comportement sur une connexion lente ou coupée pendant le téléchargement du modèle.</li>
+      <li>L’accessibilité par lecteur d’écran, contrôlée seulement à la main et partiellement.</li>
+      <li>La qualité générale du modèle sur d’autres images que les trois images de référence.</li>
+      <li>La tenue de charge sur des images très grandes.</li>
+      <li>L’extraction fiable de montants ou de champs comptables.</li>
+    </ul>
+    <p>Une extension de sécurité Kaspersky injecte un script dans les pages de test. Cette requête vient de l’antivirus du poste, pas de l’application.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Conclusion</span>
+    <p>Le mode WebAssembly, l’interface française, l’export JSON et les trois tests de référence fonctionnent et sont reproductibles. Les limites restantes sont documentées et datées.</p>
+    <p>La démo n’est pas un produit fini : c’est une démonstration mesurée, avec ses angles morts écrits. C’est précisément ce qui la rend utilisable en rendez-vous client.</p>
+  </section>
+
+  <section>
+    <span class="section-label">Liens</span>
+    <ul>
+      <li><a href="../../demos/ocr-llm-miniature/">Ouvrir la démo</a></li>
+      <li><a href="../../demos/ocr-llm-miniature/documentation.html">Lire la documentation de la démo</a></li>
+      <li><a href="https://github.com/Adam-s-tech/ocr-llm-miniature" rel="noopener">Code source sur GitHub</a></li>
+      <li><a href="https://github.com/Adam-s-tech/ocr-llm-miniature/blob/main/NOTICE.md" rel="noopener">Crédits et licences</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <p>AdamAI Lab · <a href="https://lab.adamai.fr/">lab.adamai.fr</a> · <a href="../../contact.html">Contact</a></p>
+</footer>
+
+</body>
+</html>

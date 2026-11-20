@@ -9,7 +9,18 @@ Site : https://lab.adamai.fr
 - **Insights** : les signaux IA qui comptent, avec les points de vigilance et les questions utiles.
 - **Focus** : des analyses cadrées sur un sujet précis, avec une grille de lecture.
 - **Méthode** : une démarche en quatre étapes, cadrer, trier, analyser, recommander.
+- **Démos** : les démonstrations exécutables, avec leur rapport de test.
 - **Contact** : un échange de 20 minutes pour cadrer un sujet IA.
+
+## Démos et tests
+
+Chaque démo vit dans son propre dossier sous `demos/<sujet>/`, avec ses liens relatifs et son URL canonique. Le registre `demos/demos.json` alimente le catalogue, l'index des tests et le sitemap.
+
+| Commande | Rôle |
+|---|---|
+| `node outils/sync-demo.mjs --slug <sujet>` | copie une démo et réécrit son URL de base |
+| `node outils/build-hub.mjs` | régénère catalogue, index des tests et sitemap |
+| `node outils/verify-site.mjs` | contrôle canonical, sitemap, liens et absence de tiret cadratin |
 
 ## Structure du dépôt
 
@@ -22,6 +33,11 @@ Site : https://lab.adamai.fr
 | `method.html` | méthode en quatre étapes |
 | `contact.html` | prise de contact |
 | `css/style.css` | styles du site |
+| `demos/` | catalogue et démonstrations |
+| `tests/` | index et rapports de test |
+| `outils/` | scripts de synchronisation et de contrôle |
+| `.github/workflows/pages.yml` | publication GitHub Pages |
+| `.nojekyll` | désactive Jekyll sur la branche publiée |
 | `CNAME` | domaine `lab.adamai.fr` |
 | `robots.txt` | règles d'indexation |
 | `sitemap.xml` | plan du site |
@@ -38,7 +54,7 @@ Puis ouvrir `http://localhost:8000`.
 
 ## Publication
 
-Le site est publié via GitHub Pages sur `lab.adamai.fr`. Le fichier `CNAME` porte le domaine. Ne pas le modifier sans mettre à jour le DNS.
+Le site est publié via GitHub Pages, en source GitHub Actions. Le workflow `.github/workflows/pages.yml` vérifie le site, prépare un artefact limité aux pages publiées, puis déploie. Le fichier `CNAME` porte le domaine. Ne pas le modifier sans mettre à jour le DNS.
 
 ## Licence
 

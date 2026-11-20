@@ -1,0 +1,15 @@
+{
+  "mise_a_jour": "2026-11-20",
+  "demos": [
+    {
+      "slug": "ocr-llm-miniature",
+      "titre": "OCR et vision avec un LLM miniature",
+      "resume": "Analyse d’image locale dans le navigateur : OCR, détection d’objets, segmentation et export JSON, sans envoi de l’image.",
+      "source": "https://github.com/Adam-s-tech/ocr-llm-miniature",
+      "documentation": "documentation.html",
+      "rapport": "ocr-llm-miniature",
+      "date_ajout": "2026-11-20",
+      "statut": "stable"
+    }
+  ]
+}
