@@ -34,6 +34,9 @@ jobs:
       - name: Vérifier la cohérence du site
         run: node outils/verify-site.mjs
 
+      - name: Contrôler la typographie
+        run: node outils/scan-typographie.mjs --strict
+
       - name: Préparer l'artefact
         run: |
           mkdir -p _site
