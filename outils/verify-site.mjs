@@ -93,6 +93,12 @@ else if (robots[0].trim() !== `Sitemap: ${SITE}/sitemap.xml`) {
 
 if (read("CNAME").trim() !== "lab.adamai.fr") fail("CNAME : domaine inattendu");
 
+for (const rel of ["index.html", "insights.html", "focus.html", "gpt-image.html", "method.html", "contact.html"]) {
+  const html = read(rel);
+  if (/[\u2014\u2013]/.test(html)) fail(`${rel} : tiret cadratin ou demi-cadratin`);
+  if (/&(mdash|ndash);/i.test(html)) fail(`${rel} : entité de tiret cadratin ou demi-cadratin`);
+}
+
 for (const rel of [...listHtml("demos"), ...listHtml("tests")]) {
   const html = read(rel);
   if (/[\u2014\u2013]/.test(html)) fail(`${rel} : tiret cadratin ou demi-cadratin`);
