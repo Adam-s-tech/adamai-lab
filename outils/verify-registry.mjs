@@ -62,12 +62,12 @@ if (!demos) {
 
 const slugs = new Set();
 const rapports = new Set();
-const typeCount = { demo: 0, test: 0 };
+const typeCount = { demo: 0, test: 0, guide: 0 };
 
 for (const [index, entry] of (demos || []).entries()) {
   const name = isString(entry.slug) ? entry.slug : `entrée ${index + 1}`;
   const type = entry.type || "demo";
-  if (type !== "demo" && type !== "test") {
+  if (type !== "demo" && type !== "test" && type !== "guide") {
     fail(`${name} : type inconnu ${type}`);
     continue;
   }
@@ -143,6 +143,35 @@ for (const [index, entry] of (demos || []).entries()) {
     if (!isString(entry.rapport)) fail(`${name} : rapport absent pour une entrée de test`);
   }
 
+  if (type === "guide") {
+    if (!isString(entry.resume)) fail(`${name} : resume absent`);
+    if (!isString(entry.source) || !/^https:\/\//.test(entry.source)) {
+      fail(`${name} : source https absente`);
+    }
+    if (!isString(entry.guide) || !/^https:\/\//.test(entry.guide)) {
+      fail(`${name} : guide https absent`);
+    }
+    const statuts = ["francise", "partiel", "teste", "obsolete"];
+    if (!statuts.includes(entry.statut)) {
+      fail(`${name} : statut de guide inconnu ${entry.statut}`);
+    }
+    if (!exists(`guides/${entry.slug}/index.html`)) {
+      fail(`${name} : guides/${entry.slug}/index.html absent`);
+    }
+    for (const key of ["prerequis", "plateformes", "tags"]) {
+      if (entry[key] !== undefined) {
+        if (!Array.isArray(entry[key]) || entry[key].some((item) => !isString(item))) {
+          fail(`${name} : ${key} doit être un tableau de chaînes`);
+        }
+      }
+    }
+    for (const key of ["duree", "niveau", "test"]) {
+      if (entry[key] !== undefined && !isString(entry[key])) {
+        fail(`${name} : champ ${key} vide ou invalide`);
+      }
+    }
+  }
+
   if (entry.rapport !== undefined) {
     if (!isString(entry.rapport) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.rapport)) {
       fail(`${name} : rapport invalide`);
@@ -156,7 +185,7 @@ for (const [index, entry] of (demos || []).entries()) {
   }
 }
 
-infos.push(`${(demos || []).length} entrées, ${typeCount.demo} démo(s), ${typeCount.test} test(s)`);
+infos.push(`${(demos || []).length} entrées, ${typeCount.demo} démo(s), ${typeCount.test} test(s), ${typeCount.guide} guide(s)`);
 
 for (const line of infos) console.log(`i ${line}`);
 if (errors.length) {

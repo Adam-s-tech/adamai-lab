@@ -40,11 +40,12 @@ jobs:
       - name: Préparer l'artefact
         run: |
           mkdir -p _site
-          cp -R css demos tests _site/
+          cp -R css demos tests guides _site/
           cp *.html robots.txt sitemap.xml CNAME _site/
           touch _site/.nojekyll
           test -f _site/index.html
           test -f _site/demos/index.html
+          test -f _site/guides/index.html
           test -f _site/sitemap.xml
 
       - name: Configurer Pages

@@ -43,6 +43,7 @@ for (const page of ["insights.html", "focus.html", "gpt-image.html", "method.htm
 }
 expected.set(`${SITE}/demos/`, "demos/index.html");
 expected.set(`${SITE}/tests/`, "tests/index.html");
+expected.set(`${SITE}/guides/`, "guides/index.html");
 for (const demo of demos) {
   const type = demo.type || "demo";
   if (type === "demo") {
@@ -50,6 +51,9 @@ for (const demo of demos) {
     if (demo.documentation) {
       expected.set(`${SITE}/demos/${demo.slug}/${demo.documentation}`, `demos/${demo.slug}/${demo.documentation}`);
     }
+  }
+  if (type === "guide") {
+    expected.set(`${SITE}/guides/${demo.slug}/`, `guides/${demo.slug}/index.html`);
   }
   if (demo.rapport) {
     expected.set(`${SITE}/tests/${demo.rapport}/`, `tests/${demo.rapport}/index.html`);
@@ -99,10 +103,10 @@ for (const rel of ["index.html", "insights.html", "focus.html", "gpt-image.html"
   if (/&(mdash|ndash);/i.test(html)) fail(`${rel} : entité de tiret cadratin ou demi-cadratin`);
 }
 
-for (const rel of [...listHtml("demos"), ...listHtml("tests")]) {
+for (const rel of [...listHtml("demos"), ...listHtml("tests"), ...listHtml("guides")]) {
   const html = read(rel);
   if (/[\u2014\u2013]/.test(html)) fail(`${rel} : tiret cadratin ou demi-cadratin`);
-  if (/adam-s-tech\.github\.io/.test(html)) fail(`${rel} : URL de site de projet restante`);
+  if (!rel.startsWith("guides/") && /adam-s-tech\.github\.io/.test(html)) fail(`${rel} : URL de site de projet restante`);
   for (const m of html.matchAll(/(?:href|src)="([^"]+)"/g)) {
     const raw = m[1];
     if (/^(https?:|mailto:|data:|blob:|#)/.test(raw)) continue;
@@ -177,7 +181,7 @@ for (const demo of demos) {
 if (!exists(".nojekyll")) fail(".nojekyll absent à la racine");
 
 infos.push(`${expected.size} URL publiques`);
-infos.push(`${listHtml("demos").length + listHtml("tests").length} pages démo et test`);
+infos.push(`${listHtml("demos").length + listHtml("tests").length + listHtml("guides").length} pages démo, test et guide`);
 
 for (const line of infos) console.log(`i ${line}`);
 if (errors.length) {
