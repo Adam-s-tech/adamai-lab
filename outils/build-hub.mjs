@@ -51,11 +51,14 @@ for (const demo of demos) {
     if (!demo[key]) throw new Error(`demos.json : champ ${key} manquant`);
   }
   const type = demo.type || "demo";
-  if (type !== "demo" && type !== "test") {
+  if (type !== "demo" && type !== "test" && type !== "guide") {
     throw new Error(`demos.json : type inconnu pour ${demo.slug} (${type})`);
   }
   if (type === "demo" && (!demo.resume || !demo.source)) {
     throw new Error(`demos.json : resume ou source manquant pour la démo ${demo.slug}`);
+  }
+  if (type === "guide" && (!demo.resume || !demo.source || !demo.guide)) {
+    throw new Error(`demos.json : resume, source ou guide manquant pour le guide ${demo.slug}`);
   }
   if (type === "test" && !demo.rapport) {
     throw new Error(`demos.json : rapport manquant pour l’entrée de test ${demo.slug}`);
@@ -100,6 +103,31 @@ for (const demo of demos) {
 }
 testLines.push("    </div>");
 
+const guideLabels = {
+  francise: "Guide français",
+  partiel: "Test partiel",
+  teste: "Testé",
+  obsolete: "Obsolète",
+};
+
+const guideLines = [];
+guideLines.push("    <div class=\"cards\">");
+for (const demo of demos) {
+  if ((demo.type || "demo") !== "guide") continue;
+  const url = `./${demo.slug}/`;
+  const label = guideLabels[demo.statut] || demo.statut;
+  guideLines.push("      <article class=\"card\">");
+  guideLines.push(`        <h3><a href="${url}">${escapeHtml(demo.titre)}</a></h3>`);
+  guideLines.push(`        <p>${escapeHtml(demo.resume)}</p>`);
+  guideLines.push(`        <p><span class="tag-coming">${escapeHtml(label)}</span></p>`);
+  const links = [`<a href="${demo.guide}" rel="noopener">Lire le guide</a>`];
+  if (demo.video) links.push(`<a href="${demo.video}" rel="noopener">Vidéo</a>`);
+  links.push(`<a href="${demo.source}" rel="noopener">Code source</a>`);
+  guideLines.push(`        <p>${links.join(" · ")}</p>`);
+  guideLines.push("      </article>");
+}
+guideLines.push("    </div>");
+
 const urlLines = [];
 function urlEntry(loc, changefreq, priority) {
   urlLines.push("  <url>");
@@ -124,10 +152,18 @@ for (const demo of demos) {
   urlEntry(`${SITE}/tests/${demo.rapport}/`, "monthly", "0.6");
 }
 
+urlEntry(`${SITE}/guides/`, "weekly", "0.9");
+for (const demo of demos) {
+  if ((demo.type || "demo") !== "guide") continue;
+  urlEntry(`${SITE}/guides/${demo.slug}/`, "monthly", "0.8");
+}
+
 const a = replaceBlock("demos/index.html", "<!-- demos:debut -->", "<!-- demos:fin -->", demoLines);
 const b = replaceBlock("tests/index.html", "<!-- tests:debut -->", "<!-- tests:fin -->", testLines);
+const g = replaceBlock("guides/index.html", "<!-- guides:debut -->", "<!-- guides:fin -->", guideLines);
 const c = replaceBlock("sitemap.xml", "<!-- urls:debut -->", "<!-- urls:fin -->", urlLines);
 
 console.log(`catalogue : ${a} lignes`);
 console.log(`tests : ${b} lignes`);
+console.log(`guides : ${g} lignes`);
 console.log(`sitemap : ${c} lignes`);

@@ -1,5 +1,5 @@
 {
-  "mise_a_jour": "2026-11-25",
+  "mise_a_jour": "2026-11-28",
   "demos": [
     {
       "slug": "ocr-llm-miniature",
@@ -23,6 +23,40 @@
       "resume_test": "Trois images de référence, contrôles d’interface et limites observées.",
       "source_commit": "0548ed74cb3d16f6274a6602ff4005d14dbd5ced",
       "synced_at": "2026-11-25T21:25:27.718Z"
+    },
+    {
+      "slug": "jarvis",
+      "type": "guide",
+      "titre": "Jarvis, assistant vocal avec Gemini Live",
+      "resume": "Guide français pour installer, configurer et utiliser Jarvis : permissions, modes classique et Live, second cerveau, limites et FAQ.",
+      "source": "https://github.com/Adam-s-tech/jarvis",
+      "amont": "https://github.com/EricTechPro/jarvis",
+      "guide": "https://adam-s-tech.github.io/jarvis-guide-fr/",
+      "video": "https://youtu.be/VOmHhN6hBoQ",
+      "date_ajout": "2026-11-28",
+      "statut": "francise",
+      "test": "a_completer",
+      "licence": "AGPL-3.0",
+      "credits": "Fork de Roamies par Ken Kai, adaptation par Eric Tech, guide rédigé par AdamAI Lab",
+      "tags": [
+        "assistant vocal",
+        "gemini live",
+        "contrôle d’écran",
+        "second cerveau",
+        "tauri"
+      ],
+      "prerequis": [
+        "Compte Google AI Studio",
+        "Clé Gemini",
+        "macOS, Windows ou Linux"
+      ],
+      "duree": "15 min",
+      "niveau": "débutant",
+      "plateformes": [
+        "macOS",
+        "Windows",
+        "Linux"
+      ]
     }
   ]
 }

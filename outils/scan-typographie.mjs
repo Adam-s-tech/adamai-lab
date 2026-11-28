@@ -29,6 +29,8 @@ const pages = [
   "contact.html",
   "demos/index.html",
   "tests/index.html",
+  "guides/index.html",
+  ...listHtml("guides"),
   ...listHtml("demos/ocr-llm-miniature").filter((p) => !p.includes("/vendor/")),
   ...listHtml("tests/ocr-llm-miniature"),
 ];
